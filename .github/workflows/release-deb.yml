@@ -61,6 +61,12 @@ jobs:
             xz "${f%.zst}"
             rm "$f"
           done
+          # Add epoch 5: to supersede distro's epoch:4 packages
+          mkdir ctrl && cd ctrl
+          tar xf ../control.tar.xz
+          sed -i 's/^Version: /Version: 5:/' control
+          tar cJf ../control.tar.xz ./*
+          cd .. && rm -rf ctrl
           rm "../$DEB"
           ar rcs "../$DEB" debian-binary control.tar.xz data.tar.xz
 
